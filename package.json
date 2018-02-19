@@ -1,17 +1,22 @@
 {
   "name": "telegrambot",
-  "version": "0.0.0",
+  "version": "0.8.0",
   "private": true,
+  "main": "app.js",
+  "description": "Simple bot",
+  "dependencies": {},
+  "devDependencies": {},
   "scripts": {
-    "start": "node app.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "body-parser": "~1.18.2",
-    "cookie-parser": "~1.4.3",
-    "debug": "~2.6.9",
-    "express": "~4.15.5",
-    "jade": "~1.11.0",
-    "morgan": "~1.9.0",
-    "serve-favicon": "~2.4.5"
-  }
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Google-Cat/telegramBotCalculator.git"
+  },
+  "author": "lrlunin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Google-Cat/telegramBotCalculator/issues"
+  },
+  "homepage": "https://github.com/Google-Cat/telegramBotCalculator#readme"
 }
