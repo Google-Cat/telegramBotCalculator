@@ -16,9 +16,10 @@ http.createServer(function (req, res) {
         str = body.toString();
         objekt = JSON.parse(str);
         inComeMessage = objekt.message;
-        toSendMessage = {"method": 'sendMessage?chat_id=' + inComeMessage.chat.id + "&text=hvatit mne pisat"}
-
+        toSendMessage = {"method": 'sendMessage?chat_id=' + inComeMessage.chat.id.toString() + "&text=hvatit mne pisat"}
+        console.log(inComeMessage.chat.id.toString())
         res.write(JSON.stringify(toSendMessage));
+        console.log(JSON.stringify(toSendMessage))
         res.end();
     });
 
