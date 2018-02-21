@@ -20,10 +20,11 @@ http.createServer(function (req, res) {
             "method": 'sendMessage',
             "chat_id": inComeMessage.chat.id.toString(),
             "text": "hvatit mne pisat"
-        }
+        };
         console.log(inComeMessage.chat.id.toString())
         res.write(JSON.stringify(toSendMessage));
-        console.log(JSON.stringify(toSendMessage))
+        console.log(JSON.stringify(toSendMessage));
+        res.setHeader("Content-Type", "application/json")
         res.end();
     });
 
