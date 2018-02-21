@@ -4,6 +4,8 @@ var port = process.env.PORT || 8080;
 //create a server object:
 http.createServer(function (req, res) {
     var objekt;
+    var toSendMessage;
+    var inComeMessage;
     var str = '';
 
     var body = [];
@@ -13,7 +15,11 @@ http.createServer(function (req, res) {
         body = buffer.concat(body).toString();
         str = body.toString();
         objekt = JSON.parse(str);
-        res.write(objekt.message.toString())
+        inComeMessage = objekt.message;
+        toSendMessage = {"chat_id": inComeMessage.from, "text": 'Ты написал: ' + inComeMessage.text}
+
+
+        res.write(JSON.stringify(toSendMessage));
         res.end();
     });
 
