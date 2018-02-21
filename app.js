@@ -12,6 +12,7 @@ http.createServer(function (req, res) {
     req.on('data', function (chunk) {
         body.push(chunk);
     }).on('end', function () {
+        res.writeHead(200, {'Content-Type': 'application/json'});
         body = buffer.concat(body).toString();
         str = body.toString();
         objekt = JSON.parse(str);
@@ -24,7 +25,6 @@ http.createServer(function (req, res) {
         console.log(inComeMessage.chat.id.toString())
         res.write(JSON.stringify(toSendMessage));
         console.log(JSON.stringify(toSendMessage));
-        res.setHeader("Content-Type", "application/json")
         res.end();
     });
 
