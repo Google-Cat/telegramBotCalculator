@@ -1,7 +1,21 @@
 var http = require('http');
+var buffer = require('buffer').Buffer;
 var port = process.env.PORT || 8080;
 //create a server object:
 http.createServer(function (req, res) {
-    res.write('Hello World!'); //write a response to the client
-    res.end(); //end the response
+    var objekt;
+    var str = '';
+
+    var body = [];
+    req.on('data', function (chunk) {
+        body.push(chunk);
+    }).on('end', function () {
+        body = buffer.concat(body).toString();
+        str = body.toString();
+        objekt = JSON.parse(str);
+        res.write(objekt.message.toString())
+        res.end();
+    });
+
+    // at this point, `body` has the entire request body stored in it as a string
 }).listen(port); //the server object listens on port 8080
