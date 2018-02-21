@@ -16,7 +16,7 @@ http.createServer(function (req, res) {
         str = body.toString();
         objekt = JSON.parse(str);
         inComeMessage = objekt.message;
-        toSendMessage = {"method": 'sendMessage?=chat_id=' + inComeMessage.from + "&text=" + 'Ты написал: ' + inComeMessage.text}
+        toSendMessage = {"method": 'sendMessage?chat_id=' + inComeMessage.from + "&text=" + 'Ты написал: ' + inComeMessage.text}
 
         res.write(JSON.stringify(toSendMessage));
         res.end();
