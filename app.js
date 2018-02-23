@@ -7,7 +7,6 @@ http.createServer(function (req, res) {
     var toSendMessage;
     var inComeMessage;
     var str = '';
-
     var body = [];
     req.on('data', function (chunk) {
         body.push(chunk);
@@ -21,7 +20,7 @@ http.createServer(function (req, res) {
             toSendMessage = {
                 "method": 'sendMessage',
                 "chat_id": inComeMessage.chat.id.toString(),
-                "text": 0,
+                "text": '',
                 "reply_markup": {
                     'keyboard': [['AC', '+', '-'], ['7', '8', '9'], ['4', '5', '6'], ['1', '2', '3'], ['', '0', '']],
                     'resize_keyboard': true,
@@ -29,11 +28,11 @@ http.createServer(function (req, res) {
                 }
             };
         } else
-        toSendMessage = {
-            "method": 'sendMessage',
-            "chat_id": inComeMessage.chat.id.toString(),
-            "text": "Не пиши мне ничего"
-        };
+            toSendMessage = {
+                "method": 'sendMessage',
+                "chat_id": inComeMessage.chat.id.toString(),
+                "text": 'Не пиши мне ничего'
+            };
         res.write(JSON.stringify(toSendMessage));
         res.end();
     });
