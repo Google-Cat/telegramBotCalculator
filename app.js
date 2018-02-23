@@ -59,7 +59,7 @@ http.createServer(function (req, res) {
                 "message_id": query.message.message_id,
                 "text": "потыкал? ну теперь заживём"
             };
-            console.log(command.method, command.message.message_id, command.text);
+            console.log(command.method, command.message_id, command.text);
         }
         res.write(JSON.stringify(command));
         res.end();
