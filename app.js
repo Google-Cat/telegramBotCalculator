@@ -54,8 +54,12 @@ http.createServer(function (req, res) {
                     };
             }
         } else
-            command = {"method": "editMessageText", "message_id": query.message.message_id, "text": query.data};
-        console.log(command.toString());
+            command = {
+                "method": "editMessageText",
+                "message_id": query.message.message_id,
+                "text": "потыкал? ну теперь заживём"
+            };
+        console.log(command.method, command.message.message_id, command.text);
         res.write(JSON.stringify(command));
         res.end();
     });
