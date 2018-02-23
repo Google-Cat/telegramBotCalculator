@@ -56,8 +56,9 @@ http.createServer(function (req, res) {
         } else {
             command = {
                 "method": "editMessageText",
+                "chat_id": query.message.chat.id,
                 "message_id": query.message.message_id,
-                "text": "потыкал? ну теперь заживём"
+                "text": query.data
             };
             console.log(command.method, command.message_id, command.text);
         }
