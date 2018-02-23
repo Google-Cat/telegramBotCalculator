@@ -24,8 +24,6 @@ http.createServer(function (req, res) {
                 "text": '',
                 "reply_markup": {
                     'keyboard': [[{"text": 'AC'}, {"text": '+'}, {"text": '-'}], [{"text": '7'}, {"text": '8'}, {"text": '9'}], [{"text": '4'}, {"text": '5'}, {"text": '6'}], [{"text": '1'}, {"text": '2'}, {"text": '3'}], [{"text": ''}, {"text": '0'}, {"text": ''}]],
-                    'resize_keyboard': true,
-                    'one_time_keyboard': true
                 }
             };
         } else
