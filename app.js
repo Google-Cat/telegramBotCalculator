@@ -17,14 +17,24 @@ http.createServer(function (req, res) {
         str = body.toString();
         objekt = JSON.parse(str);
         inComeMessage = objekt.message;
+        if (inComeMessage.message.text.toString() === "/start") {
+            toSendMessage = {
+                "method": 'sendMessage',
+                "chat_id": inComeMessage.chat.id.toString(),
+                "text": 0,
+                "reply_markup": {
+                    'keyboard': [['AC', '+', '-'], ['7', '8', '9'], ['4', '5', '6'], ['1', '2', '3'], ['', '0', '']],
+                    'resize_keyboard': true,
+                    'one_time_keyboard': true
+                }
+            };
+        } else
         toSendMessage = {
             "method": 'sendMessage',
             "chat_id": inComeMessage.chat.id.toString(),
-            "text": "hvatit mne pisat"
+            "text": "Не пиши мне ничего"
         };
-        console.log(inComeMessage.chat.id.toString())
         res.write(JSON.stringify(toSendMessage));
-        console.log(JSON.stringify(toSendMessage));
         res.end();
     });
 
