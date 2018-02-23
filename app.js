@@ -5,6 +5,25 @@ var port = process.env.PORT || 8080;
 http.createServer(function (req, res) {
     var objekt;
     var command;
+    var keyboard_keys = {
+        'inline_keyboard': [[{"text": 'AC', "callback_data": "reset"}, {
+            "text": '+',
+            "callback_data": "summ"
+        }, {"text": '-', "callback_data": "minus"}],
+            [{"text": '7', "callback_data": 7}, {"text": '8', "callback_data": 8}, {
+                "text": '9',
+                "callback_data": 9
+            }],
+            [{"text": '4', "callback_data": 4}, {"text": '5', "callback_data": 5}, {
+                "text": '6',
+                "callback_data": 6
+            }],
+            [{"text": '1', "callback_data": 1}, {"text": '2', "callback_data": 2}, {
+                "text": '3',
+                "callback_data": 3
+            }],
+            [{"text": '0', "callback_data": 0}]]
+    };
     var inComeMessage;
     var query;
     var str = '';
@@ -26,25 +45,7 @@ http.createServer(function (req, res) {
                         "method": 'sendMessage',
                         "chat_id": inComeMessage.chat.id.toString(),
                         "text": '0',
-                        "reply_markup": {
-                            'inline_keyboard': [[{"text": 'AC', "callback_data": "reset"}, {
-                                "text": '+',
-                                "callback_data": "summ"
-                            }, {"text": '-', "callback_data": "minus"}],
-                                [{"text": '7', "callback_data": 7}, {"text": '8', "callback_data": 8}, {
-                                    "text": '9',
-                                    "callback_data": 9
-                                }],
-                                [{"text": '4', "callback_data": 4}, {"text": '5', "callback_data": 5}, {
-                                    "text": '6',
-                                    "callback_data": 6
-                                }],
-                                [{"text": '1', "callback_data": 1}, {"text": '2', "callback_data": 2}, {
-                                    "text": '3',
-                                    "callback_data": 3
-                                }],
-                                [{"text": '0', "callback_data": 0}]]
-                        }
+                        "reply_markup": keyboard_keys
                     };
                 } else
                     command = {
@@ -58,7 +59,8 @@ http.createServer(function (req, res) {
                 "method": "editMessageText",
                 "chat_id": query.message.chat.id,
                 "message_id": query.message.message_id,
-                "text": query.data
+                "text": query.data,
+                "reply_markup": keyboard_keys
             };
             console.log(command.method, command.message_id, command.text);
         }
