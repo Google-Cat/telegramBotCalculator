@@ -17,24 +17,26 @@ http.createServer(function (req, res) {
         objekt = JSON.parse(str);
         inComeMessage = objekt.message;
         console.log(inComeMessage.message.text.toString());
-        if (inComeMessage.message.text.toString() === "/start") {
-            toSendMessage = {
-                "method": 'sendMessage',
-                "chat_id": inComeMessage.chat.id.toString(),
-                "text": '',
-                "reply_markup": {
-                    'keyboard': [['AC', '+', '-'], ['7', '8', '9'], ['4', '5', '6'], ['1', '2', '3'], ['', '0', '']],
-                    'resize_keyboard': true,
-                    'one_time_keyboard': true
-                }
-            };
-        } else
-            toSendMessage = {
-                "method": 'sendMessage',
-                "chat_id": inComeMessage.chat.id.toString(),
-                "text": 'Не пиши мне ничего'
-            };
-        res.write(JSON.stringify(toSendMessage));
+        if (inComeMessage.message !== undefined) {
+            if (inComeMessage.message.text.toString() === "/start") {
+                toSendMessage = {
+                    "method": 'sendMessage',
+                    "chat_id": inComeMessage.chat.id.toString(),
+                    "text": '',
+                    "reply_markup": {
+                        'keyboard': [['AC', '+', '-'], ['7', '8', '9'], ['4', '5', '6'], ['1', '2', '3'], ['', '0', '']],
+                        'resize_keyboard': true,
+                        'one_time_keyboard': true
+                    }
+                };
+            } else
+                toSendMessage = {
+                    "method": 'sendMessage',
+                    "chat_id": inComeMessage.chat.id.toString(),
+                    "text": 'Не пиши мне ничего'
+                };
+            res.write(JSON.stringify(toSendMessage));
+        }
         res.end();
     });
 
