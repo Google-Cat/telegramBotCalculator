@@ -16,6 +16,7 @@ http.createServer(function (req, res) {
         str = body.toString();
         objekt = JSON.parse(str);
         inComeMessage = objekt.message;
+        console.log(inComeMessage.message.text.toString());
         if (inComeMessage.message.text.toString() === "/start") {
             toSendMessage = {
                 "method": 'sendMessage',
