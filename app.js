@@ -76,8 +76,8 @@ http.createServer(function (req, res) {
                 lastCommand = query.data;
             } else if ((query.data === 'ravno')) {
                 if (lastCommand === "minus") {
-                    editCurrentString(parseInt(savedString) - parseInt(currentString));
-                } else editCurrentString(parseInt(savedString) + parseInt(currentString));
+                    currentString = (parseInt(savedString) - parseInt(currentString));
+                } else currentString = (parseInt(savedString) + parseInt(currentString));
             } else if (query.data === 'reset') {
                 currentString = '0';
             }
