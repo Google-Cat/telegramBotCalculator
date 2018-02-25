@@ -64,7 +64,7 @@ http.createServer(function (req, res) {
                         "text": "0",
                         "reply_markup": keyboard_keys
                     };
-                    userInfoMap.add(inComeMessage.chat.id, new UserInfo("0"))
+                    userInfoMap.set(inComeMessage.chat.id, new UserInfo("0"))
                 } else
                     command = {
                         "method": 'sendMessage',
