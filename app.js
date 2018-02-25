@@ -3,6 +3,8 @@ var buffer = require('buffer').Buffer;
 var port = process.env.PORT || 8080;
 //create a server object:
 http.createServer(function (req, res) {
+    var savedString;
+    var currentString = '0';
     var objekt;
     var command;
     var keyboard_keys = {
@@ -28,6 +30,15 @@ http.createServer(function (req, res) {
     var query;
     var str = '';
     var body = [];
+
+    function editCurrentString(str) {
+        if (currentString === '0') {
+            currentString = str;
+        }
+        else currentString += str;
+        return currentString;
+    }
+
     req.on('data', function (chunk) {
         body.push(chunk);
     }).on('end', function () {
@@ -44,7 +55,7 @@ http.createServer(function (req, res) {
                     command = {
                         "method": 'sendMessage',
                         "chat_id": inComeMessage.chat.id.toString(),
-                        "text": '0',
+                        "text": currentString,
                         "reply_markup": keyboard_keys
                     };
                 } else
@@ -59,10 +70,10 @@ http.createServer(function (req, res) {
                 "method": "editMessageText",
                 "chat_id": query.message.chat.id,
                 "message_id": query.message.message_id,
-                "text": query.data,
+                "text": editCurrentString(query.data),
                 "reply_markup": keyboard_keys
             };
-            console.log(command.method, command.message_id, command.text);
+            console.log(command.method, command.message_id, editCurrentString(query.data));
         }
         res.write(JSON.stringify(command));
         res.end();
