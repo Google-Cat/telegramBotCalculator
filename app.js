@@ -1,10 +1,19 @@
 var http = require('http');
 var buffer = require('buffer').Buffer;
 var port = process.env.PORT || 8080;
+var currentString = '0';
+var savedString;
+
 //create a server object:
+function editCurrentString(str) {
+    if (currentString === '0') {
+        currentString = str;
+    }
+    else currentString += str;
+    return currentString;
+}
+
 http.createServer(function (req, res) {
-    var savedString;
-    var currentString = '0';
     var objekt;
     var command;
     var keyboard_keys = {
@@ -30,14 +39,6 @@ http.createServer(function (req, res) {
     var query;
     var str = '';
     var body = [];
-
-    function editCurrentString(str) {
-        if (currentString === '0') {
-            currentString = str;
-        }
-        else currentString += str;
-        return currentString;
-    }
 
     req.on('data', function (chunk) {
         body.push(chunk);
