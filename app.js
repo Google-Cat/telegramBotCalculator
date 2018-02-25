@@ -3,6 +3,7 @@ var buffer = require('buffer').Buffer;
 var port = process.env.PORT || 8080;
 var currentString = '0';
 var savedString;
+var lastCommand;
 
 //create a server object:
 function editCurrentString(str) {
@@ -33,7 +34,7 @@ http.createServer(function (req, res) {
                 "text": '3',
                 "callback_data": 3
             }],
-            [{"text": '0', "callback_data": 0}]]
+            [{"text": '0', "callback_data": 0}, {"text": '=', "callback_data": 'ravno'}]]
     };
     var inComeMessage;
     var query;
@@ -67,14 +68,25 @@ http.createServer(function (req, res) {
                     };
             }
         } else {
-            command = {
-                "method": "editMessageText",
-                "chat_id": query.message.chat.id,
-                "message_id": query.message.message_id,
-                "text": editCurrentString(query.data),
-                "reply_markup": keyboard_keys
-            };
-            console.log(command.method, command.message_id, editCurrentString(query.data));
+            if ((query.data !== "minus") & (query.data !== "reset" ) && ( query.data !== "summ") && (query.data !== 'ravno')) {
+                editCurrentString(query.data);
+                command = {
+                    "method": "editMessageText",
+                    "chat_id": query.message.chat.id,
+                    "message_id": query.message.message_id,
+                    "text": currentString,
+                    "reply_markup": keyboard_keys
+                };
+            } else if ((query.data === "minus") || (query.data === "summ")) {
+                savedString = currentString;
+                currentString = '0';
+                lastCommand = query.data;
+            } else if ((query.data === 'ravno')) {
+                if (lastCommand === "minus") {
+                    editCurrentString(parseInt(savedString) - parseInt(currentString));
+                } else editCurrentString(parseInt(savedString) + parseInt(currentString));
+            }
+            console.log(command.method, command.message_id, currentString);
         }
         res.write(JSON.stringify(command));
         res.end();
