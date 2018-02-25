@@ -70,13 +70,6 @@ http.createServer(function (req, res) {
         } else {
             if ((query.data !== "minus") & (query.data !== "reset" ) && ( query.data !== "summ") && (query.data !== 'ravno')) {
                 editCurrentString(query.data);
-                command = {
-                    "method": "editMessageText",
-                    "chat_id": query.message.chat.id,
-                    "message_id": query.message.message_id,
-                    "text": currentString,
-                    "reply_markup": keyboard_keys
-                };
             } else if ((query.data === "minus") || (query.data === "summ")) {
                 savedString = currentString;
                 currentString = '0';
@@ -86,6 +79,13 @@ http.createServer(function (req, res) {
                     editCurrentString(parseInt(savedString) - parseInt(currentString));
                 } else editCurrentString(parseInt(savedString) + parseInt(currentString));
             }
+            command = {
+                "method": "editMessageText",
+                "chat_id": query.message.chat.id,
+                "message_id": query.message.message_id,
+                "text": currentString,
+                "reply_markup": keyboard_keys
+            };
             console.log(command.method, command.message_id, currentString);
         }
         res.write(JSON.stringify(command));
