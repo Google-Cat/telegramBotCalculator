@@ -1,6 +1,6 @@
+var HashMap = require('hashmap');
 var http = require('http');
 var buffer = require('buffer').Buffer;
-
 var port = process.env.PORT || 8080;
 var userInfoMap = new HashMap();
 
