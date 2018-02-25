@@ -1,17 +1,21 @@
 var http = require('http');
 var buffer = require('buffer').Buffer;
+
 var port = process.env.PORT || 8080;
-var currentString = '0';
-var savedString;
-var lastCommand;
+var userInfoMap = new HashMap();
+
+function UserInfo(ss) {
+    this.currentString = '0';
+    this.savedString = ss;
+    this.lastCommand = "";
+}
 
 //create a server object:
-function editCurrentString(str) {
-    if (currentString === '0') {
-        currentString = str;
+function editCurrentString(chatId, str) {
+    if (userInfoMap.get(chatId).currentString === '0') {
+        userInfoMap.get(chatId).currentString = str;
     }
-    else currentString += str;
-    return currentString;
+    else userInfoMap.get(chatId).currentString += str;
 }
 
 http.createServer(function (req, res) {
@@ -20,7 +24,7 @@ http.createServer(function (req, res) {
     var keyboard_keys = {
         'inline_keyboard': [[{"text": 'AC', "callback_data": "reset"}, {
             "text": '+',
-            "callback_data": "summ"
+            "callback_data": "plus"
         }, {"text": '-', "callback_data": "minus"}],
             [{"text": '7', "callback_data": 7}, {"text": '8', "callback_data": 8}, {
                 "text": '9',
@@ -34,7 +38,7 @@ http.createServer(function (req, res) {
                 "text": '3',
                 "callback_data": 3
             }],
-            [{"text": '0', "callback_data": 0}, {"text": '=', "callback_data": 'ravno'}]]
+            [{"text": '0', "callback_data": 0}, {"text": '=', "callback_data": 'answer'}]]
     };
     var inComeMessage;
     var query;
@@ -57,9 +61,10 @@ http.createServer(function (req, res) {
                     command = {
                         "method": 'sendMessage',
                         "chat_id": inComeMessage.chat.id.toString(),
-                        "text": currentString,
+                        "text": "0",
                         "reply_markup": keyboard_keys
                     };
+                    userInfoMap.add(inComeMessage.chat.id, new UserInfo("0"))
                 } else
                     command = {
                         "method": 'sendMessage',
@@ -68,27 +73,28 @@ http.createServer(function (req, res) {
                     };
             }
         } else {
-            if ((query.data !== "minus") & (query.data !== "reset" ) && ( query.data !== "summ") && (query.data !== 'ravno')) {
-                editCurrentString(query.data);
-            } else if ((query.data === "minus") || (query.data === "summ")) {
-                savedString = currentString;
-                currentString = '0';
-                lastCommand = query.data;
-            } else if ((query.data === 'ravno')) {
-                if (lastCommand === "minus") {
-                    currentString = (parseInt(savedString) - parseInt(currentString));
-                } else currentString = (parseInt(savedString) + parseInt(currentString));
+            if ((query.data !== "minus") & (query.data !== "reset" ) && ( query.data !== "plus") && (query.data !== 'answer')) {
+                editCurrentString(query.message.chat.id, query.data);
+            } else if ((query.data === "minus") || (query.data === "plus")) {
+                userInfoMap.get(query.message.chat.id).savedString = userInfoMap.get(query.message.chat.id).currentString;
+                userInfoMap.get(query.message.chat.id).currentString = '0';
+                userInfoMap.get(query.message.chat.id).lastCommand = query.data;
+            } else if ((query.data === 'answer')) {
+                if (userInfoMap.get(query.message.chat.id).lastCommand === "minus") {
+                    userInfoMap.get(query.message.chat.id).currentString = (parseInt(userInfoMap.get(query.message.chat.id).savedString) - parseInt(userInfoMap.get(query.message.chat.id).currentString));
+                } else if (userInfoMap.get(query.message.chat.id).lastCommand === "plus") {
+                    userInfoMap.get(query.message.chat.id).currentString = (parseInt(userInfoMap.get(query.message.chat.id).savedString) + parseInt(userInfoMap.get(query.message.chat.id).currentString));
+                }
             } else if (query.data === 'reset') {
-                currentString = '0';
+                userInfoMap.get(query.message.chat.id).currentString = '0';
             }
             command = {
                 "method": "editMessageText",
                 "chat_id": query.message.chat.id,
                 "message_id": query.message.message_id,
-                "text": currentString,
+                "text": userInfoMap.get(query.message.chat.id).currentString,
                 "reply_markup": keyboard_keys
             };
-            console.log(command.method, command.message_id, currentString);
         }
         res.write(JSON.stringify(command));
         res.end();
