@@ -78,6 +78,8 @@ http.createServer(function (req, res) {
                 if (lastCommand === "minus") {
                     editCurrentString(parseInt(savedString) - parseInt(currentString));
                 } else editCurrentString(parseInt(savedString) + parseInt(currentString));
+            } else if (query.data === 'reset') {
+                currentString = '0';
             }
             command = {
                 "method": "editMessageText",
