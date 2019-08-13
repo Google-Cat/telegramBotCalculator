@@ -3,4 +3,5 @@ This program implements a simple calculator with addition and subtraction operat
 
 ## Proof of work
 Delays caused by hosting are clearly visible:
+
 ![recorded from screen](https://media.giphy.com/media/m948CEU9VrV5qX2UdI/giphy.gif)
